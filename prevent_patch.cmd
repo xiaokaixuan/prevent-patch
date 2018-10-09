@@ -3,6 +3,7 @@
 setlocal
 
 set sdk=%1
+set bin=%~dsp0
 
 :main
 if "%sdk%"=="19" goto :common
@@ -38,14 +39,14 @@ exit /b
 if exist work_dir\odex\boot if exist work_dir\odex\services.odex (
 	cd work_dir\odex
 	echo Extracting boot.oat services.odex...
-	java -Xmx800m -jar "%~dsp0oat2dex.jar" boot boot.oat
-	java -Xmx800m -jar "%~dsp0oat2dex.jar" services.odex dex
+	java -Xmx800m -jar "%bin%oat2dex.jar" boot boot.oat
+	java -Xmx800m -jar "%bin%oat2dex.jar" services.odex dex
 	cd ..
-	java -Xmx800m -jar "%~dsp0baksmali.jar" d odex\services.dex -o services
+	java -Xmx800m -jar "%bin%baksmali.jar" d odex\services.dex -o services
 	echo Patching...
-	python "%~dsp0patch.py" -a "%~dsp0apk" -s services
+	python "%bin%patch.py" -a "%bin%apk" -s services
 	echo Packaging^(1/2^)...
-	java -Xmx800m -jar "%~dsp0smali.jar" a -o classes.dex services
+	java -Xmx800m -jar "%bin%smali.jar" a -o classes.dex services
 	echo Packaging^(2/2^)...
 	jar -cvf services-p.jar classes.dex
 	exit /b
@@ -57,13 +58,13 @@ goto :common
 if exist work_dir\odex\services.vdex (
 	cd work_dir\odex
 	echo Extracting services.vdex...
-	"%~dsp0vdexExtractor" -f --ignore-crc-error -v 2 -i services.vdex
+	"%bin%vdexExtractor" -f --ignore-crc-error -v 2 -i services.vdex
 	cd ..
-	java -Xmx800m -jar "%~dsp0baksmali.jar" d odex\services_classes.dex -o services
+	java -Xmx800m -jar "%bin%baksmali.jar" d odex\services_classes.dex -o services
 	echo Patching...
-	python "%~dsp0patch_oreo.py" -a "%~dsp0apk_oreo" -s services
+	python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
 	echo Packaging^(1/2^)...
-	java -Xmx800m -jar "%~dsp0smali.jar" a -o classes.dex services
+	java -Xmx800m -jar "%bin%smali.jar" a -o classes.dex services
 	echo Packaging^(2/2^)...
 	jar -cvf services-p.jar classes.dex
 	exit /b
@@ -74,14 +75,14 @@ goto :common
 if exist work_dir\odex\services.vdex (
 	cd work_dir\odex
 	echo Extracting services.vdex...
-	"%~dsp0vdexExtractor" -f --ignore-crc-error -v 2 -i services.vdex
+	"%bin%vdexExtractor" -f --ignore-crc-error -v 2 -i services.vdex
 	cd ..
-	"%~dsp0flinux" "%~dsp0compact_dex_converter_linux_32" odex\services_classes.cdex
-	java -Xmx800m -jar "%~dsp0baksmali.jar" d odex\services_classes.cdex.new -o services
+	"%bin%flinux" "%bin%compact_dex_converter_linux_32" odex\services_classes.cdex
+	java -Xmx800m -jar "%bin%baksmali.jar" d odex\services_classes.cdex.new -o services
 	echo Patching...
-	python "%~dsp0patch_oreo.py" -a "%~dsp0apk_oreo" -s services
+	python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
 	echo Packaging^(1/2^)...
-	java -Xmx800m -jar "%~dsp0smali.jar" a -o classes.dex services
+	java -Xmx800m -jar "%bin%smali.jar" a -o classes.dex services
 	echo Packaging^(2/2^)...
 	jar -cvf services-p.jar classes.dex
 	exit /b
@@ -92,11 +93,11 @@ goto :common
 if exist work_dir\odex\services.odex (
 	cd work_dir
 	echo Extracting services.odex...
-	java -Xmx800m -jar "%~dsp0baksmali.jar" x -d odex odex\services.odex -o services
+	java -Xmx800m -jar "%bin%baksmali.jar" x -d odex odex\services.odex -o services
 	echo Patching...
-	python "%~dsp0patch.py" -a "%~dsp0apk" -s services
+	python "%bin%patch.py" -a "%bin%apk" -s services
 	echo Packaging^(1/2^)...
-	java -Xmx800m -jar "%~dsp0smali.jar" a -o classes.dex services
+	java -Xmx800m -jar "%bin%smali.jar" a -o classes.dex services
 	echo Packaging^(2/2^)...
 	jar -cvf services-p.jar classes.dex
 	exit /b
@@ -104,19 +105,19 @@ if exist work_dir\odex\services.odex (
 if exist work_dir\services.jar (
 	cd work_dir
 	echo Extracting service.jar...
-	java -Xmx800m -jar "%~dsp0baksmali.jar" d services.jar -o services
+	java -Xmx800m -jar "%bin%baksmali.jar" d services.jar -o services
 	echo Patching...
 	if "%sdk%"=="26" (
-		python "%~dsp0patch_oreo.py" -a "%~dsp0apk_oreo" -s services
+		python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
 	) else if "%sdk%"=="27" (
-		python "%~dsp0patch_oreo.py" -a "%~dsp0apk_oreo" -s services
+		python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
 	) else if "%sdk%"=="28" (
-		python "%~dsp0patch_oreo.py" -a "%~dsp0apk_oreo" -s services
+		python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
 	) else (
-		python "%~dsp0patch.py" -a "%~dsp0apk" -s services
+		python "%bin%patch.py" -a "%bin%apk" -s services
 	)
 	echo Packaging^(1/2^)...
-	java -Xmx800m -jar "%~dsp0smali.jar" a -o classes.dex services
+	java -Xmx800m -jar "%bin%smali.jar" a -o classes.dex services
 	echo Packaging^(2/2^)...
 	jar -cvf services-p.jar classes.dex
 	exit /b
