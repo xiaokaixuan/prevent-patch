@@ -76,8 +76,9 @@ if exist work_dir\odex\services.vdex (
 	cd work_dir\odex
 	echo Extracting services.vdex...
 	"%bin%vdexExtractor" -f --ignore-crc-error -v 2 -i services.vdex
-	cd ..
-	"%bin%flinux" "%bin%compact_dex_converter_linux_32" odex\services_classes.cdex
+	cd "%bin%"
+	flinux compact_dex_converter_linux_32 work_dir\odex\services_classes.cdex
+	cd work_dir
 	java -Xmx800m -jar "%bin%baksmali.jar" d odex\services_classes.cdex.new -o services
 	echo Patching...
 	python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
@@ -95,7 +96,15 @@ if exist work_dir\odex\services.odex (
 	echo Extracting services.odex...
 	java -Xmx800m -jar "%bin%baksmali.jar" x -d odex odex\services.odex -o services
 	echo Patching...
-	python "%bin%patch.py" -a "%bin%apk" -s services
+	if "%sdk%"=="26" (
+		python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
+	) else if "%sdk%"=="27" (
+		python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
+	) else if "%sdk%"=="28" (
+		python "%bin%patch_oreo.py" -a "%bin%apk_oreo" -s services
+	) else (
+		python "%bin%patch.py" -a "%bin%apk" -s services
+	)
 	echo Packaging^(1/2^)...
 	java -Xmx800m -jar "%bin%smali.jar" a -o classes.dex services
 	echo Packaging^(2/2^)...
