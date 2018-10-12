@@ -24,12 +24,12 @@ sdk-version:
 - > [JDK][javase], Java SE 8 (JDK) 以上，smali/baksmali 需要 Java 7，而 oat2dex 需要Java 8
 
 ### 准备
-- > 设备或ROM中提取 `services.jar`, `services.odex`, `services.odex`, `boot.oat`。
+- > 设备或ROM中提取 `services.jar`, `boot.oat`, `services.odex`, `services.vdex`。
 ```
 $> adb pull /system/framework
 ```
 - > Android 4.4 或者非 odex 优化版本 (`services.jar` 在 1M 以上)， 将`services.jar`放入`work_dir`目录即可。
-- > Odex/Vdex 优化版本 (`services.jar` 在 1M 以下)，将`services.jar`放入work_dir目录，`boot.oat`、`services.odex`、`services.odex`放入`work_dir/odex`目录即可。
+- > Odex/vdex 优化版本 (`services.jar` 在 1M 以下)，将`services.jar`放入work_dir目录，`boot.oat`、`services.odex`、`services.vdex`放入`work_dir/odex`目录即可。
 - > Android 7.0 及以上版本中的`boot.oat`可能依赖同目录下的其它文件，如果`boot.oat`或`services.odex`出现在多个目录，使用任意一个即可。
 
 ### 打补丁
@@ -51,5 +51,4 @@ $> prevent_patch.cmd <sdk-version>
 [javase]: http://www.oracle.com/technetwork/java/javase/downloads/index.html
 [python]: https://www.python.org/downloads/
 [smali]: https://bitbucket.org/JesusFreke/smali/downloads
-[patch.py]: https://github.com/liudongmiao/Brevent/raw/master/assets/patch.py
 [oat2dex]: https://github.com/testwhat/SmaliEx/releases/tag/0.86
