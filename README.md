@@ -44,6 +44,9 @@ $> prevent_patch.cmd <sdk-version>
 - > Android 8.0 以下版本直接安装`hy.apk`即可。
 - > Android 8.0 以上版本需将`hy_oreo.apk`拷贝至`/system/app/Brevent/Brevent.apk`，安装为系统应用即可。
 
+### 参考
+- > https://github.com/xzr467706992/Lanthanum_system_toolbox_v2
+
 [adb-win]: http://dl.google.com/android/repository/platform-tools_r25-windows.zip
 [adb-mac]: http://dl.google.com/android/repository/platform-tools_r25-macosx.zip
 [adb-linux]: http://dl.google.com/android/repository/platform-tools_r25-linux.zip
