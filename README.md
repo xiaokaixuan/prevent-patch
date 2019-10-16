@@ -46,6 +46,7 @@ $> prevent_patch.cmd <sdk-version>
 
 ### 参考
 - > https://github.com/xzr467706992/Lanthanum_system_toolbox_v2
+- > https://github.com/kmahyyg/brevent-full-archieve/tree/hotfix_only/aosp
 
 [adb-win]: http://dl.google.com/android/repository/platform-tools_r25-windows.zip
 [adb-mac]: http://dl.google.com/android/repository/platform-tools_r25-macosx.zip
